@@ -77,7 +77,7 @@ export default function Sidebar() {
         <div className="relative mb-4">
           <button 
             onClick={() => setIsSwitcherOpen(!isSwitcherOpen)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-[#f8fafc] border border-slate-100 rounded-xl hover:border-indigo-100 transition-all group"
+            className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl hover:border-indigo-100 transition-all group"
           >
             <div className="flex flex-col items-start overflow-hidden text-left">
                <span className="text-[7px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Active Business</span>
@@ -163,7 +163,7 @@ export default function Sidebar() {
 
       {/* 3. BOTTOM SECTION (Strict Fixed Height) */}
       <div className="flex-none p-4 mt-auto border-t border-slate-50">
-        <div className="p-3 bg-[#f8fafc] rounded-xl border border-slate-100 mb-2 space-y-1.5">
+        <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 mb-2 space-y-1.5">
            <div className="flex items-center gap-2">
               <ShieldCheck className="w-3.5 h-3.5 text-indigo-500" />
               <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Safe Engine</span>

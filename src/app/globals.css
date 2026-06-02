@@ -26,3 +26,307 @@
   100% { background-position: 200% 0; }
 }
 
+/* Day & Night theme overrides for the Admin Control Room */
+.theme-light {
+  --admin-bg-app: #f8fafc;
+  --admin-bg-card: #ffffff;
+  --admin-bg-card-hover: #f1f5f9;
+  --admin-border: #e2e8f0;
+  --admin-text-primary: #0f172a;
+  --admin-text-secondary: #475569;
+  --admin-text-muted: #64748b;
+  --admin-bg-input: #f1f5f9;
+  
+  --admin-accent-indigo-bg: #e0e7ff;
+  --admin-accent-indigo-border: #c7d2fe;
+  --admin-accent-indigo-text: #4f46e5;
+  
+  --admin-accent-purple-bg: #f3e8ff;
+  --admin-accent-purple-border: #e9d5ff;
+  --admin-accent-purple-text: #9333ea;
+  
+  --admin-accent-emerald-bg: #d1fae5;
+  --admin-accent-emerald-border: #a7f3d0;
+  --admin-accent-emerald-text: #059669;
+  
+  --admin-accent-amber-bg: #fef3c7;
+  --admin-accent-amber-border: #fde68a;
+  --admin-accent-amber-text: #d97706;
+  
+  --admin-accent-pink-bg: #fce7f3;
+  --admin-accent-pink-border: #fbcfe8;
+  --admin-accent-pink-text: #db2777;
+}
+
+.theme-dark {
+  --admin-bg-app: #070b13;
+  --admin-bg-card: #0c1220;
+  --admin-bg-card-hover: #111827;
+  --admin-border: rgba(30, 41, 59, 0.8);
+  --admin-text-primary: #f8fafc;
+  --admin-text-secondary: #cbd5e1;
+  --admin-text-muted: #94a3b8;
+  --admin-bg-input: #12192c;
+  
+  --admin-accent-indigo-bg: rgba(30, 27, 75, 0.4);
+  --admin-accent-indigo-border: rgba(99, 102, 241, 0.2);
+  --admin-accent-indigo-text: #818cf8;
+  
+  --admin-accent-purple-bg: rgba(88, 28, 135, 0.4);
+  --admin-accent-purple-border: rgba(168, 85, 247, 0.2);
+  --admin-accent-purple-text: #c084fc;
+  
+  --admin-accent-emerald-bg: rgba(6, 78, 59, 0.3);
+  --admin-accent-emerald-border: rgba(16, 185, 129, 0.2);
+  --admin-accent-emerald-text: #34d399;
+  
+  --admin-accent-amber-bg: rgba(120, 53, 4, 0.3);
+  --admin-accent-amber-border: rgba(245, 158, 11, 0.2);
+  --admin-accent-amber-text: #fbbf24;
+  
+  --admin-accent-pink-bg: rgba(131, 24, 67, 0.3);
+  --admin-accent-pink-border: rgba(236, 72, 153, 0.2);
+  --admin-accent-pink-text: #f472b6;
+}
+
+/* Scoped classes utilizing the CSS variables */
+.admin-card {
+  background-color: var(--admin-bg-card) !important;
+  border-color: var(--admin-border) !important;
+}
+
+.admin-card-hover:hover {
+  border-color: var(--admin-accent-indigo-text) !important;
+}
+
+.admin-text-primary {
+  color: var(--admin-text-primary) !important;
+}
+
+.admin-text-secondary {
+  color: var(--admin-text-secondary) !important;
+}
+
+.admin-text-muted {
+  color: var(--admin-text-muted) !important;
+}
+
+.admin-border {
+  border-color: var(--admin-border) !important;
+}
+
+.admin-timeline-connector {
+  border-color: var(--admin-border) !important;
+}
+
+/* Timeline Specific Accents */
+.admin-accent-login {
+  background-color: var(--admin-accent-indigo-bg) !important;
+  border-color: var(--admin-accent-indigo-border) !important;
+  color: var(--admin-accent-indigo-text) !important;
+}
+.admin-accent-admin_created {
+  background-color: var(--admin-accent-purple-bg) !important;
+  border-color: var(--admin-accent-purple-border) !important;
+  color: var(--admin-accent-purple-text) !important;
+}
+.admin-accent-gmb_connect {
+  background-color: var(--admin-accent-emerald-bg) !important;
+  border-color: var(--admin-accent-emerald-border) !important;
+  color: var(--admin-accent-emerald-text) !important;
+}
+.admin-accent-plan_update {
+  background-color: var(--admin-accent-amber-bg) !important;
+  border-color: var(--admin-accent-amber-border) !important;
+  color: var(--admin-accent-amber-text) !important;
+}
+.admin-accent-feedback_added {
+  background-color: var(--admin-accent-pink-bg) !important;
+  border-color: var(--admin-accent-pink-border) !important;
+  color: var(--admin-accent-pink-text) !important;
+}
+.admin-accent-default {
+  background-color: var(--admin-bg-input) !important;
+  border-color: var(--admin-border) !important;
+  color: var(--admin-text-muted) !important;
+}
+
+.admin-input {
+  background-color: var(--admin-bg-input) !important;
+  border-color: var(--admin-border) !important;
+  color: var(--admin-text-primary) !important;
+}
+
+.admin-table-header {
+  border-bottom-color: var(--admin-border) !important;
+  background-color: var(--admin-bg-card-hover) !important;
+}
+
+.admin-table-row {
+  border-bottom-color: var(--admin-border) !important;
+}
+.admin-table-row:hover {
+  background-color: var(--admin-bg-card-hover) !important;
+}
+
+.admin-welcome-card {
+  background: linear-gradient(135deg, var(--admin-bg-card), var(--admin-bg-card-hover)) !important;
+  border-color: var(--admin-border) !important;
+}
+
+
+/* User Dashboard Day & Night Theme Overrides */
+.dashboard-dark {
+  background-color: #070b13 !important;
+  color: #f8fafc !important;
+}
+.dashboard-dark div.min-h-screen.bg-slate-50 {
+  background-color: #070b13 !important;
+}
+.dashboard-dark aside {
+  background-color: #0c1220 !important;
+  border-color: #1e293b !important;
+}
+.dashboard-dark aside nav a {
+  color: #94a3b8 !important;
+}
+.dashboard-dark aside nav a:hover {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+}
+.dashboard-dark header {
+  background-color: rgba(8, 13, 21, 0.85) !important;
+  border-color: #1e293b !important;
+  color: #ffffff !important;
+}
+.dashboard-dark header h2 {
+  color: #ffffff !important;
+}
+.dashboard-dark header p {
+  color: #f8fafc !important;
+}
+.dashboard-dark main {
+  background-color: #070b13 !important;
+}
+.dashboard-dark .bg-white {
+  background-color: #0c1220 !important;
+  border-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+.dashboard-dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+.dashboard-dark .text-slate-850\/20 {
+  color: #e2e8f0 !important;
+}
+.dashboard-dark .text-slate-800 {
+  color: #e2e8f0 !important;
+}
+.dashboard-dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+.dashboard-dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+.dashboard-dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+.dashboard-dark .text-slate-400 {
+  color: #64748b !important;
+}
+.dashboard-dark .border-slate-100 {
+  border-color: #1e293b !important;
+}
+.dashboard-dark .border-slate-50 {
+  border-color: #1e293b !important;
+}
+.dashboard-dark input {
+  background-color: #111827 !important;
+  border-color: #1e293b !important;
+  color: #ffffff !important;
+}
+.dashboard-dark textarea {
+  background-color: #111827 !important;
+  border-color: #1e293b !important;
+  color: #ffffff !important;
+}
+.dashboard-dark select {
+  background-color: #111827 !important;
+  border-color: #1e293b !important;
+  color: #ffffff !important;
+}
+.dashboard-dark .bg-slate-50 {
+  background-color: #111827 !important;
+}
+.dashboard-dark .bg-\[\#f8fafc\] {
+  background-color: #111827 !important;
+}
+.dashboard-dark .border-l {
+  border-color: #1e293b !important;
+}
+.dashboard-dark .border-t {
+  border-color: #1e293b !important;
+}
+.dashboard-dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) !important;
+}
+.dashboard-dark .shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+}
+.dashboard-dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+}
+.dashboard-dark .bg-gray-50 {
+  background-color: #111827 !important;
+}
+.dashboard-dark .text-gray-900 {
+  color: #ffffff !important;
+}
+.dashboard-dark .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+.dashboard-dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+.dashboard-dark .border-gray-200 {
+  border-color: #1e293b !important;
+}
+.dashboard-dark .bg-slate-100 {
+  background-color: #182033 !important;
+}
+.dashboard-dark .text-slate-300 {
+  color: #cbd5e1 !important;
+}
+.dashboard-dark .border-slate-200 {
+  border-color: #1e293b !important;
+}
+.dashboard-dark .bg-\[\#f8fafc\] {
+  background-color: #111827 !important;
+}
+.dashboard-dark .hover\:bg-slate-50:hover {
+  background-color: #182033 !important;
+}
+.dashboard-dark .bg-indigo-50 {
+  background-color: #1e1b4b !important;
+}
+.dashboard-dark .text-indigo-600 {
+  color: #818cf8 !important;
+}
+.dashboard-dark .bg-indigo-50\/50 {
+  background-color: rgba(30, 27, 75, 0.5) !important;
+}
+.dashboard-dark .text-purple-600 {
+  color: #c084fc !important;
+}
+.dashboard-dark .shadow-slate-200 {
+  box-shadow: none !important;
+}
+.dashboard-dark .bg-\[\#f8fafc\] {
+  background-color: #070b13 !important;
+}
+
+
+
+
+
+

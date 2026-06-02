@@ -100,7 +100,7 @@ export default function RegisterPage() {
         className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 bg-white rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden border border-slate-100 relative"
       >
         {/* LEFT PANEL: VALUE PROP */}
-        <div className="hidden md:flex bg-slate-900 p-16 relative overflow-hidden flex-col justify-between">
+        <div className="hidden md:flex bg-slate-900 p-8 md:p-12 lg:p-14 relative overflow-hidden flex-col justify-between">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-purple-900" />
           <motion.div 
             animate={{ rotate: 360 }}
@@ -109,7 +109,7 @@ export default function RegisterPage() {
           />
 
           <div className="relative z-10">
-            <Link href="/" className="flex items-center gap-3 mb-12">
+            <Link href="/" className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-600 font-black text-xl shadow-lg">R</div>
               <span className="text-white font-black text-xl tracking-tight">ReviewFlow AI</span>
             </Link>
@@ -118,7 +118,7 @@ export default function RegisterPage() {
               Start Growing <br />
               with <span className="text-indigo-400">AI Power.</span>
             </h2>
-            <p className="text-indigo-100 text-lg font-medium leading-relaxed max-w-sm mb-12">
+            <p className="text-indigo-100 text-lg font-medium leading-relaxed max-w-sm mb-6">
               Join the elite businesses using automation to dominate local search rankings.
             </p>
 
@@ -152,14 +152,14 @@ export default function RegisterPage() {
         </div>
 
         {/* RIGHT PANEL: SIGNUP FORM */}
-        <div className="p-8 md:p-16 lg:p-20 flex flex-col justify-center bg-white">
+        <div className="p-8 md:p-12 lg:p-14 flex flex-col justify-center bg-white">
           <div className="max-w-md mx-auto w-full">
-            <header className="mb-10 text-center md:text-left">
+            <header className="mb-6 text-center md:text-left">
               <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Create Account</h1>
               <p className="text-slate-500 font-medium">Join us and setup your agency in minutes.</p>
             </header>
 
-            <form onSubmit={handleRegister} className="space-y-5">
+            <form onSubmit={handleRegister} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Full Name</label>
@@ -251,7 +251,7 @@ export default function RegisterPage() {
               </Button>
             </form>
 
-            <div className="mt-8 flex flex-col items-center gap-4">
+            <div className="mt-6 flex flex-col items-center gap-4">
               <div className="flex items-center gap-4 text-slate-400 font-black text-[10px] uppercase tracking-widest">
                  <div className="flex items-center gap-1.5">
                    <CheckCircle2 className="w-3 h-3 text-indigo-500" />
@@ -264,7 +264,7 @@ export default function RegisterPage() {
                  </div>
               </div>
 
-              <footer className="pt-8 border-t border-slate-50 w-full text-center">
+              <footer className="pt-6 border-t border-slate-50 w-full text-center">
                 <p className="text-slate-500 text-sm font-medium">
                   Already have an account? <Link href="/login" className="text-indigo-600 font-black hover:text-indigo-700 inline-flex items-center gap-1 group">
                     Sign In

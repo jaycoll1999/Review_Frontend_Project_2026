@@ -1,20 +1,67 @@
-'use client';
-import { useState } from 'react';
-import { Bell, ChevronDown, Sparkles, Home, User, LogOut } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Bell, ChevronDown, Sparkles, Home, User, LogOut, Sun, Moon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function Topbar({ user }: { user: any }) {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('userTheme') === 'dark';
+      setIsDark(saved);
+      if (saved) {
+        document.body.classList.add('dashboard-dark');
+      } else {
+        document.body.classList.remove('dashboard-dark');
+      }
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextVal = !isDark;
+    setIsDark(nextVal);
+    localStorage.setItem('userTheme', nextVal ? 'dark' : 'light');
+    if (nextVal) {
+      document.body.classList.add('dashboard-dark');
+    } else {
+      document.body.classList.remove('dashboard-dark');
+    }
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    router.push('/login');
+    const isImpersonating = localStorage.getItem('isImpersonating') === 'true';
+    const adminToken = localStorage.getItem('adminToken');
+    const adminUser = localStorage.getItem('adminUser');
+
+    if (isImpersonating && adminToken && adminUser) {
+      // Restore Admin Session
+      localStorage.setItem('token', adminToken);
+      localStorage.setItem('user', adminUser);
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUser');
+      localStorage.removeItem('isImpersonating');
+      if (typeof window !== 'undefined') {
+        document.body.classList.remove('dashboard-dark');
+      }
+      router.push('/admin-panel/users');
+    } else {
+      // Standard Logout
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUser');
+      localStorage.removeItem('isImpersonating');
+      if (typeof window !== 'undefined') {
+        document.body.classList.remove('dashboard-dark');
+      }
+      router.push('/login');
+    }
   };
 
   return (
-    <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-10 sticky top-0 z-30">
+    <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-10 sticky top-0 z-30 transition-colors duration-300">
       <div className="flex items-center gap-4">
         <div className="flex flex-col">
           <h2 className="text-lg font-bold text-slate-900 leading-none">
@@ -34,6 +81,15 @@ export default function Topbar({ user }: { user: any }) {
         </button>
 
         <div className="flex items-center gap-6">
+          {/* Day & Night theme toggle button */}
+          <button 
+            onClick={toggleTheme}
+            className="p-2 text-slate-400 hover:text-slate-950 transition-colors flex items-center justify-center rounded-xl"
+            title={isDark ? "Switch to Day Mode" : "Switch to Night Mode"}
+          >
+            {isDark ? <Sun className="w-5 h-5 text-amber-500" /> : <Moon className="w-5 h-5 text-slate-500" />}
+          </button>
+
           <button className="relative p-2 text-slate-400 hover:text-slate-900 transition-colors group">
             <Bell className="w-5 h-5" />
             <span className="absolute top-2 right-2 w-2 h-2 bg-purple-600 rounded-full border-2 border-white" />

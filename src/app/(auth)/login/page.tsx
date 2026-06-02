@@ -51,7 +51,7 @@ export default function LoginPage() {
         className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 bg-white rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden border border-slate-100 relative"
       >
         {/* LEFT PANEL: BRANDING & DEPTH */}
-        <div className="hidden md:flex bg-slate-900 p-16 relative overflow-hidden flex-col justify-between">
+        <div className="hidden md:flex bg-slate-900 p-8 md:p-12 lg:p-14 relative overflow-hidden flex-col justify-between">
           {/* Animated Background Gradients */}
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-purple-900" />
           <motion.div 
@@ -75,7 +75,7 @@ export default function LoginPage() {
 
           {/* Header Content */}
           <div className="relative z-10">
-            <Link href="/" className="flex items-center gap-3 mb-12 group">
+            <Link href="/" className="flex items-center gap-3 mb-8 group">
               <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-600 font-black text-xl shadow-lg">R</div>
               <span className="text-white font-black text-xl tracking-tight group-hover:text-indigo-300 transition-colors">ReviewFlow AI</span>
             </Link>
@@ -84,7 +84,7 @@ export default function LoginPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-8 tracking-tighter"
+              className="text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tighter"
             >
               Dominate <br />
               <span className="text-indigo-400">Local Search</span> <br />
@@ -115,24 +115,24 @@ export default function LoginPage() {
               "ReviewFlow transformed our Google profile. Our review count exploded by 300% in 90 days!"
             </p>
             <div className="mt-6 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-200 font-bold">SJ</div>
+              <div className="w-12 h-12 rounded-full bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-200 font-bold">RF</div>
               <div>
-                <p className="text-white font-bold text-sm">Sarah Jenkins</p>
-                <p className="text-indigo-300 text-xs font-semibold uppercase tracking-widest">Growth at MagicBolt</p>
+                <p className="text-white font-bold text-sm">ReviewFlow AI</p>
+                <p className="text-indigo-300 text-xs font-semibold uppercase tracking-widest">Growth at ReviewFlow AI</p>
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* RIGHT PANEL: PREMIUM LOGIN FORM */}
-        <div className="p-8 md:p-20 lg:p-24 flex flex-col justify-center relative bg-white">
+        <div className="p-8 md:p-12 lg:p-16 flex flex-col justify-center relative bg-white">
           <div className="max-w-sm mx-auto w-full">
-            <header className="mb-12">
+            <header className="mb-6">
               <h1 className="text-4xl font-black text-slate-900 mb-3 tracking-tight">Welcome back</h1>
               <p className="text-slate-500 font-medium">Please enter your details to sign in.</p>
             </header>
 
-            <form onSubmit={handleLogin} className="space-y-6">
+            <form onSubmit={handleLogin} className="space-y-4">
               {/* Email Input */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Email Address</label>
@@ -216,7 +216,7 @@ export default function LoginPage() {
             </form>
 
             {/* Trust Element */}
-            <div className="mt-12 flex flex-col items-center gap-4">
+            <div className="mt-6 flex flex-col items-center gap-4">
               <div className="flex items-center gap-2 text-slate-400">
                 <CheckCircle2 className="w-4 h-4 text-indigo-500" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Trusted by 1000+ businesses</span>
@@ -228,13 +228,19 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <footer className="mt-12 text-center">
+            <footer className="mt-6 text-center space-y-4">
               <p className="text-slate-500 text-sm font-medium">
                 Don't have an account? <Link href="/register" className="text-indigo-600 font-black hover:text-indigo-700 inline-flex items-center gap-1 group">
                   Create Account
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </p>
+              <div className="pt-4 border-t border-slate-100 flex justify-center">
+                <Link href="/login-admin" className="text-[10px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest inline-flex items-center gap-1 group transition-colors">
+                  Are you an Administrator? Sign In Here
+                  <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </div>
             </footer>
           </div>
         </div>

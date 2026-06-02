@@ -47,8 +47,55 @@ export default function Dashboard() {
   const fetchData = async (userId: string) => {
     try {
       setLoading(true);
-      const res: any = await api.get(`/feedback/${userId}`);
-      setReviews(res || []);
+      
+      // 1. Fetch local feedbacks
+      let localFeedbacks: any[] = [];
+      try {
+        const localRes: any = await api.get(`/feedback/${userId}`);
+        if (Array.isArray(localRes)) {
+          localFeedbacks = localRes.map((f: any) => ({
+            id: f.id || `local-${f.createdAt}`,
+            customerName: f.customerName || 'Anonymous Customer',
+            rating: Number(f.rating) || 5,
+            comment: f.message || f.comment || 'No comment provided.',
+            createdAt: f.createdAt ? new Date(f.createdAt) : new Date(),
+            source: 'local'
+          }));
+        }
+      } catch (err) {
+        console.error('Error fetching local feedback:', err);
+      }
+
+      // 2. Fetch GMB reviews if connected
+      let gmbReviews: any[] = [];
+      try {
+        const storedUser = localStorage.getItem('user');
+        const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+        
+        if (parsedUser?.gmbConnected) {
+          const gmbRes: any = await api.get('/user/gmb-real-reviews');
+          const reviewsList = gmbRes.reviews || [];
+          if (Array.isArray(reviewsList)) {
+            gmbReviews = reviewsList.map((r: any) => ({
+              id: r.reviewId || `gmb-${r.createTime}`,
+              customerName: r.reviewerName || 'Google User',
+              rating: Number(r.starRating) || 5,
+              comment: r.comment || 'No comment provided.',
+              createdAt: r.createTime ? new Date(r.createTime) : new Date(),
+              source: 'gmb'
+            }));
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching GMB reviews:', err);
+      }
+
+      // Combine and sort by date descending
+      const combined = [...localFeedbacks, ...gmbReviews].sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+      );
+
+      setReviews(combined);
     } catch (err) {
       console.error(err);
     } finally {
@@ -64,7 +111,10 @@ export default function Dashboard() {
         loading: 'Connecting to Google Profile...',
         success: () => {
           setSyncing(false);
-          return 'Sync complete! 4 new reviews found.';
+          if (user) {
+            fetchData(user.id);
+          }
+          return 'Sync complete! GMB reviews fetched.';
         },
         error: 'Connection failed.',
       }
@@ -187,14 +237,18 @@ export default function Dashboard() {
                 </div>
                 <div className="space-y-4">
                    {reviews.slice(0, 3).map((review, i) => (
-                     <div key={i} className="bg-white p-6 rounded-3xl border border-slate-50 shadow-sm flex items-start gap-5 hover:border-indigo-100 transition-all cursor-default group">
+                     <div key={review.id || i} className="bg-white p-6 rounded-3xl border border-slate-50 shadow-sm flex items-start gap-5 hover:border-indigo-100 transition-all cursor-default group">
                         <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 font-black shrink-0 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
                            {review.customerName?.[0] || 'C'}
                         </div>
                         <div className="flex-1 space-y-1">
                            <div className="flex items-center justify-between">
                               <h4 className="text-sm font-black text-slate-900">{review.customerName || 'Anonymous Customer'}</h4>
-                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{new Date().toLocaleDateString()}</span>
+                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                {review.createdAt instanceof Date 
+                                  ? review.createdAt.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+                                  : new Date(review.createdAt || Date.now()).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                              </span>
                            </div>
                            <div className="flex gap-0.5">
                               {[1,2,3,4,5].map(star => (

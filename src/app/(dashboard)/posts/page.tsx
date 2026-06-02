@@ -23,6 +23,7 @@ export default function PostsPage() {
   const [selectedCategory, setSelectedCategory] = useState('Special Offers');
   const [prompt, setPrompt] = useState('');
   const [user, setUser] = useState<any>(null);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -35,16 +36,162 @@ export default function PostsPage() {
     }
   }, []);
 
+  useEffect(() => {
+    const business = user?.businessName || 'ReviewFlow Partner';
+    setSuggestions([
+      {
+        id: 1,
+        title: "Weekend Flash Sale! ⚡",
+        content: `Don't miss out on our exclusive weekend offers at ${business}! Visit us this Saturday for special discounts on all premium services. #LocalBusiness #SpecialOffer`,
+        time: "Scheduled for Tomorrow, 10:00 AM",
+        category: "Special Offers",
+        published: false
+      },
+      {
+        id: 2,
+        title: "Limited Time Bundle 🎁",
+        content: `Get more for less! Check out our new value bundles designed to give you the best experience at ${business}. Available only this week!`,
+        time: "Suggested by AI",
+        category: "Special Offers",
+        published: false
+      },
+      {
+        id: 3,
+        title: "New Spring Collection is Here! 🌸",
+        content: `The wait is over! Experience the finest selection of spring essentials now available at ${business}. Come say hi and explore what's new.`,
+        time: "Suggested by AI",
+        category: "New Arrivals",
+        published: false
+      },
+      {
+        id: 4,
+        title: "Fresh Inventory Alert 📦",
+        content: `We just restocked your favorites! From premium tools to everyday essentials, find everything you need at ${business} today.`,
+        time: "Suggested by AI",
+        category: "New Arrivals",
+        published: false
+      },
+      {
+        id: 5,
+        title: "Community Appreciation Day 🤝",
+        content: `Join us next Friday for a special community event at ${business}. Refreshments, networking, and a special giveaway await!`,
+        time: "Suggested by AI",
+        category: "Events",
+        published: false
+      },
+      {
+        id: 6,
+        title: "Workshop: Master Your Skills 🎓",
+        content: `Sign up for our upcoming hands-on workshop! Learn from the experts at ${business} and take your performance to the next level.`,
+        time: "Suggested by AI",
+        category: "Events",
+        published: false
+      },
+      {
+        id: 7,
+        title: "We've Expanded Our Hours! ⏰",
+        content: `Great news! To better serve you, ${business} will now be open until 8:00 PM on weekdays. See you soon!`,
+        time: "Suggested by AI",
+        category: "Updates",
+        published: false
+      },
+      {
+        id: 8,
+        title: "New Health & Safety Protocols ✅",
+        content: `Your safety is our priority. We've updated our guidelines at ${business} to ensure a clean and comfortable experience for everyone.`,
+        time: "Suggested by AI",
+        category: "Updates",
+        published: false
+      }
+    ]);
+  }, [user]);
+
   const handleGenerate = () => {
+    if (isGenerating) return;
     setIsGenerating(true);
+    
     toast.promise(
-      new Promise((resolve) => setTimeout(resolve, 3000)),
+      new Promise((resolve) => setTimeout(resolve, 2000)),
       {
         loading: 'AI is crafting your post...',
-        success: 'New post suggestions ready!',
+        success: 'New post suggestion ready!',
         error: 'Failed to generate post.',
       }
-    ).then(() => setIsGenerating(false));
+    ).then(() => {
+      setIsGenerating(false);
+      
+      const newPostCategory = selectedCategory;
+      let newTitle = "AI Suggested Post ✨";
+      let newContent = prompt || `Special update from ${user?.businessName || 'our business'}! Discover our latest offerings and updates.`;
+      
+      if (prompt) {
+        const words = prompt.split(' ');
+        newTitle = words.slice(0, 4).join(' ') + (words.length > 4 ? '...' : '');
+        newTitle = newTitle.charAt(0).toUpperCase() + newTitle.slice(1);
+      } else {
+        if (selectedCategory === 'Special Offers') {
+          newTitle = "Exclusive Deal Alert! 🏷️";
+          newContent = `For a limited time, get exclusive discounts on our top-rated services at ${user?.businessName || 'our store'}. Quote 'AISuggest' to claim.`;
+        } else if (selectedCategory === 'New Arrivals') {
+          newTitle = "Now in Stock! 🚀";
+          newContent = `We are excited to announce new additions to our lineup at ${user?.businessName || 'our location'}. Swing by to check them out!`;
+        } else if (selectedCategory === 'Events') {
+          newTitle = "Save the Date! 📅";
+          newContent = `Join the team at ${user?.businessName || 'our business'} for our upcoming client appreciation meetup. We can't wait to see you!`;
+        } else {
+          newTitle = "Quick Business Update 📢";
+          newContent = `We've streamlined our service process at ${user?.businessName || 'our store'} to serve you faster and better. Read details on our website.`;
+        }
+      }
+      
+      const newSuggestion = {
+        id: Date.now(),
+        title: newTitle,
+        content: newContent,
+        time: "Suggested just now",
+        category: newPostCategory,
+        published: false
+      };
+      
+      setSuggestions(prev => [newSuggestion, ...prev]);
+      setPrompt('');
+    });
+  };
+
+  const handlePublish = (postId: number) => {
+    toast.promise(
+      new Promise((resolve) => setTimeout(resolve, 1500)),
+      {
+        loading: 'Publishing to Google Business Profile...',
+        success: 'Successfully published to Google My Business! 🎉',
+        error: 'Failed to publish post.',
+      }
+    ).then(() => {
+      setSuggestions(prev => 
+        prev.map(post => 
+          post.id === postId ? { ...post, published: true } : post
+        )
+      );
+    });
+  };
+
+  const handleEdit = (post: any) => {
+    setPrompt(post.content);
+    setSelectedCategory(post.category);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toast.success('Loaded suggestion into AI editor!');
+  };
+
+  const handleCalendarClick = () => {
+    toast('Post Scheduler Calendar is active under Pro Plan.', { icon: '📅' });
+  };
+
+  const handleSortClick = () => {
+    toast('Suggestions are sorted by AI relevance first.', { icon: '⚡' });
+  };
+
+  const handleMoreClick = () => {
+    toast('Additional post options are available in Settings.', { icon: '⚙️' });
   };
 
   const categories = [
@@ -52,57 +199,6 @@ export default function PostsPage() {
     { name: 'New Arrivals', icon: Layout, color: 'text-purple-600', bg: 'bg-purple-50' },
     { name: 'Events', icon: Calendar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
     { name: 'Updates', icon: Type, color: 'text-blue-600', bg: 'bg-blue-50' },
-  ];
-
-  const suggestions = [
-    {
-      title: "Weekend Flash Sale! ⚡",
-      content: `Don't miss out on our exclusive weekend offers at ${user?.businessName || 'our store'}! Visit us this Saturday for special discounts on all premium services. #LocalBusiness #SpecialOffer`,
-      time: "Scheduled for Tomorrow, 10:00 AM",
-      category: "Special Offers"
-    },
-    {
-      title: "Limited Time Bundle 🎁",
-      content: `Get more for less! Check out our new value bundles designed to give you the best experience at ${user?.businessName || 'our shop'}. Available only this week!`,
-      time: "Suggested by AI",
-      category: "Special Offers"
-    },
-    {
-      title: "New Spring Collection is Here! 🌸",
-      content: `The wait is over! Experience the finest selection of spring essentials now available at ${user?.businessName || 'our location'}. Come say hi and explore what's new.`,
-      time: "Suggested by AI",
-      category: "New Arrivals"
-    },
-    {
-      title: "Fresh Inventory Alert 📦",
-      content: `We just restocked your favorites! From premium tools to everyday essentials, find everything you need at ${user?.businessName || 'our store'} today.`,
-      time: "Suggested by AI",
-      category: "New Arrivals"
-    },
-    {
-      title: "Community Appreciation Day 🤝",
-      content: `Join us next Friday for a special community event at ${user?.businessName || 'our office'}. Refreshments, networking, and a special giveaway await!`,
-      time: "Suggested by AI",
-      category: "Events"
-    },
-    {
-      title: "Workshop: Master Your Skills 🎓",
-      content: `Sign up for our upcoming hands-on workshop! Learn from the experts at ${user?.businessName || 'our team'} and take your performance to the next level.`,
-      time: "Suggested by AI",
-      category: "Events"
-    },
-    {
-      title: "We've Expanded Our Hours! ⏰",
-      content: `Great news! To better serve you, ${user?.businessName || 'our business'} will now be open until 8:00 PM on weekdays. See you soon!`,
-      time: "Suggested by AI",
-      category: "Updates"
-    },
-    {
-      title: "New Health & Safety Protocols ✅",
-      content: `Your safety is our priority. We've updated our guidelines at ${user?.businessName || 'our location'} to ensure a clean and comfortable experience for everyone.`,
-      time: "Suggested by AI",
-      category: "Updates"
-    }
   ];
 
   const filteredSuggestions = suggestions.filter(s => s.category === selectedCategory);
@@ -122,7 +218,7 @@ export default function PostsPage() {
             <p className="text-lg font-medium text-slate-500">Auto-generate engaging Google Business updates in seconds.</p>
           </div>
           <div className="flex gap-4">
-            <Button variant="outline" className="h-14 px-8 rounded-2xl flex items-center gap-2">
+            <Button onClick={handleCalendarClick} variant="outline" className="h-14 px-8 rounded-2xl flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               Calendar
             </Button>
@@ -183,8 +279,8 @@ export default function PostsPage() {
                 <div className="aspect-video bg-slate-100 rounded-xl mb-3 flex items-center justify-center">
                   <ImageIcon className="w-8 h-8 text-slate-300" />
                 </div>
-                <h4 className="text-xs font-bold text-slate-900 mb-1">{prompt || 'Your post title here...'}</h4>
-                <p className="text-[10px] text-slate-500 line-clamp-2">The full description of your AI generated post will appear here for review before publishing.</p>
+                <h4 className="text-xs font-bold text-slate-900 mb-1">{prompt ? (prompt.split(' ').slice(0, 4).join(' ') + (prompt.split(' ').length > 4 ? '...' : '')) : 'Your post title here...'}</h4>
+                <p className="text-[10px] text-slate-500 line-clamp-2">{prompt || 'The full description of your AI generated post will appear here for review before publishing.'}</p>
                 <div className="mt-4 pt-3 border-t border-slate-50 flex justify-between items-center">
                   <span className="text-[8px] font-black text-purple-600 uppercase tracking-widest">Learn More</span>
                   <Eye className="w-3 h-3 text-slate-300" />
@@ -199,7 +295,7 @@ export default function PostsPage() {
               <h3 className="text-xl font-black text-slate-900 tracking-tight">AI Suggested Feed</h3>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-slate-400">Sort by:</span>
-                <button className="flex items-center gap-1 text-xs font-black text-slate-900 uppercase tracking-widest">
+                <button onClick={handleSortClick} className="flex items-center gap-1 text-xs font-black text-slate-900 uppercase tracking-widest">
                   Latest
                   <MoreHorizontal className="w-3 h-3" />
                 </button>
@@ -207,8 +303,8 @@ export default function PostsPage() {
             </div>
 
             <div className="space-y-6">
-              {filteredSuggestions.map((post, i) => (
-                <Card key={i} className="p-0 overflow-hidden border-none shadow-sm hover:shadow-xl transition-all duration-500 group">
+              {filteredSuggestions.map((post) => (
+                <Card key={post.id} className="p-0 overflow-hidden border-none shadow-sm hover:shadow-xl transition-all duration-500 group">
                   <div className="flex flex-col md:flex-row">
                     <div className="md:w-1/3 aspect-square md:aspect-auto bg-slate-100 relative overflow-hidden">
                        <div className="absolute inset-0 flex items-center justify-center">
@@ -227,7 +323,7 @@ export default function PostsPage() {
                             {post.time}
                           </div>
                         </div>
-                        <Button variant="outline" className="w-10 h-10 p-0 rounded-xl shrink-0">
+                        <Button onClick={handleMoreClick} variant="outline" className="w-10 h-10 p-0 rounded-xl shrink-0">
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
                       </div>
@@ -237,11 +333,25 @@ export default function PostsPage() {
                       </p>
 
                       <div className="pt-4 flex flex-wrap gap-3">
-                        <Button className="bg-purple-600 text-white font-bold px-6 h-12 rounded-xl flex items-center gap-2 shadow-lg shadow-purple-100 hover:scale-[1.02] transition-transform">
-                          <Check className="w-4 h-4" />
-                          Approve & Publish
-                        </Button>
-                        <Button variant="outline" className="font-bold px-6 h-12 rounded-xl flex items-center gap-2 border-slate-200 hover:bg-slate-50">
+                        {post.published ? (
+                          <Button disabled className="bg-emerald-600 text-white font-bold px-6 h-12 rounded-xl flex items-center gap-2 shadow-lg shadow-emerald-100">
+                            <Check className="w-4 h-4" />
+                            Published ✓
+                          </Button>
+                        ) : (
+                          <Button 
+                            onClick={() => handlePublish(post.id)}
+                            className="bg-purple-600 text-white font-bold px-6 h-12 rounded-xl flex items-center gap-2 shadow-lg shadow-purple-100 hover:scale-[1.02] transition-transform"
+                          >
+                            <Check className="w-4 h-4" />
+                            Approve & Publish
+                          </Button>
+                        )}
+                        <Button 
+                          onClick={() => handleEdit(post)}
+                          variant="outline" 
+                          className="font-bold px-6 h-12 rounded-xl flex items-center gap-2 border-slate-200 hover:bg-slate-50"
+                        >
                           <Send className="w-4 h-4" />
                           Edit Suggestion
                         </Button>
