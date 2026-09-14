@@ -69,7 +69,7 @@ export default function AutomationPage() {
     setIsLoading(true);
     const toastId = toast.loading('Retrieving available business location profiles...');
     try {
-      const res = await api.get('/user/gmb-locations');
+      const res: any = await api.get('/user/gmb-locations');
       setLocations(res.locations || []);
       setIsMockData(res.isMock);
       setShowSelector(true);
@@ -85,7 +85,7 @@ export default function AutomationPage() {
   const loadReviews = async () => {
     setIsLoadingReviews(true);
     try {
-      const res = await api.get('/user/gmb-real-reviews');
+      const res: any = await api.get('/user/gmb-real-reviews');
       setReviews(res.reviews || []);
       setIsMockData(res.isMock);
     } catch (err: any) {

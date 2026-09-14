@@ -95,7 +95,7 @@ export default function WebsitePage() {
     { id: 'slate', color: 'bg-slate-900' },
   ];
 
-  const shareableUrl = user ? `${window.location.origin}/site/${user.id}` : '';
+  const shareableUrl = typeof window !== 'undefined' && user ? `${window.location.origin}/site/${user.id}` : '';
 
   return (
     <DashboardLayout>

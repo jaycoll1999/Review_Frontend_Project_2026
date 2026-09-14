@@ -40,11 +40,15 @@ export default function AdminLoginPage() {
         toast.error('Access Denied: Regular users are not permitted here.');
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
         return;
       }
 
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(res));
+      localStorage.setItem('adminToken', res.token);
+      localStorage.setItem('adminUser', JSON.stringify(res));
       toast.success('System Administrator Authenticated.');
       router.push('/admin-panel');
     } catch (err: any) {

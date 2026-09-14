@@ -31,7 +31,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="py-40 px-6 bg-[#f8fafc] relative overflow-hidden">
+    <section id="how-it-works" className="py-40 px-6 bg-[#f8fafc] relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-24">
           <h2 className="text-4xl lg:text-6xl font-black text-slate-900 mb-8 tracking-tight">Simple. Fast. <span className="text-indigo-600">Automatic.</span></h2>

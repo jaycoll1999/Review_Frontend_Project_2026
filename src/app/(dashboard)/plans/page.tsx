@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { Button } from '@/components/Button';
 import { Check, Zap, Rocket, Crown } from 'lucide-react';
@@ -34,32 +34,40 @@ const plans = [
 export default function PlansPage() {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
-  const handlePurchase = async (planName: string) => {
-    try {
-      setLoadingPlan(planName);
-      const res: any = await api.put('/user/plan', { plan: planName });
-      
-      // Update local storage user data
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success')) {
+      const plan = params.get('plan') || 'Premium';
+      toast.success(`${plan} plan activated successfully!`, { icon: '🎉', duration: 4000 });
       const storedUser = localStorage.getItem('user');
       if (storedUser && storedUser !== 'undefined') {
         try {
           const user = JSON.parse(storedUser);
-          user.plan = res.plan;
-          user.planStatus = res.planStatus;
+          user.plan = plan;
+          user.planStatus = 'Active';
           localStorage.setItem('user', JSON.stringify(user));
         } catch (e) {
           console.error("Plans Auth Error:", e);
         }
       }
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+    if (params.get('canceled')) {
+      toast.error('Payment was canceled.');
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
 
-      toast.success(`${planName} plan activated successfully!`, {
-        icon: '🎉',
-        duration: 4000
-      });
+  const handlePurchase = async (planName: string) => {
+    try {
+      setLoadingPlan(planName);
+      const res: any = await api.post('/stripe/create-checkout-session', { plan: planName });
+      if (res.url) {
+        window.location.href = res.url;
+      }
     } catch (err) {
       console.error(err);
       toast.error('Payment processing failed. Please try again.');
-    } finally {
       setLoadingPlan(null);
     }
   };

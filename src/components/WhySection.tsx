@@ -9,7 +9,7 @@ const bullets = [
 
 export default function WhySection() {
   return (
-    <section className="py-32 px-6 overflow-hidden">
+    <section id="why" className="py-32 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
         <div className="lg:w-1/2 relative order-2 lg:order-1">
           <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-purple-100/50 rounded-full blur-3xl -z-10" />

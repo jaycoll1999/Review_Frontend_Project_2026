@@ -50,7 +50,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="py-40 px-6 bg-white relative">
+    <section id="features" className="py-40 px-6 bg-white relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">
           <motion.div 

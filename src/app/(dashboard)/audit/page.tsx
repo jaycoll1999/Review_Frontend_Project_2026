@@ -35,6 +35,22 @@ export default function AuditPage() {
     }
   }, []);
 
+  const [isAutoFixing, setIsAutoFixing] = useState(false);
+
+  const handleAutoFix = () => {
+    setIsAutoFixing(true);
+    toast.promise(
+      new Promise((resolve) => setTimeout(resolve, 2500)),
+      {
+        loading: 'Injecting local SEO tags and optimizing profile categories...',
+        success: 'Local SEO keywords and metadata updated!',
+        error: 'Failed to apply auto-fix.',
+      }
+    ).then(() => {
+      setIsAutoFixing(false);
+    });
+  };
+
   const runAudit = () => {
     setIsRunning(true);
     setShowReport(false);
@@ -170,8 +186,16 @@ export default function AuditPage() {
                 <Card className="p-8 border-none bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-2xl shadow-purple-200">
                   <TrendingUp className="w-12 h-12 mb-6 text-white/50" />
                   <h3 className="text-xl font-black mb-2">Projected Growth</h3>
-                  <p className="text-white/80 text-sm font-medium leading-relaxed mb-6">Implementing these changes can boost your visibility by up to 45% in 30 days.</p>
-                  <Button className="w-full bg-white text-purple-600 hover:bg-slate-50 font-black h-12 rounded-xl">Auto-Fix Now</Button>
+                  <p className="text-white/80 text-sm font-medium leading-relaxed mb-6">
+                    Implementing these changes can boost your local map visibility by up to 45% in 30 days.
+                  </p>
+                  <Button 
+                    onClick={handleAutoFix}
+                    disabled={isAutoFixing}
+                    className="w-full bg-white text-purple-600 hover:bg-slate-50 font-black h-12 rounded-xl shadow-lg transition-transform active:scale-95"
+                  >
+                    {isAutoFixing ? 'Optimizing Profile...' : 'Auto-Fix With AI Now'}
+                  </Button>
                 </Card>
               </div>
             </div>

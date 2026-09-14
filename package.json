@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.64.0",
     "axios": "^1.15.2",
     "clsx": "^2.1.1",
     "framer-motion": "^10.18.0",

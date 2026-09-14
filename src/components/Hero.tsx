@@ -62,14 +62,33 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-12 flex items-center justify-center lg:justify-start gap-4 text-xs text-slate-400 font-bold"
+            className="mt-12 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 text-xs text-slate-500 font-bold"
           >
             <div className="flex -space-x-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-200" />
+              {[
+                { initial: "JD", bg: "from-blue-600 to-indigo-600" },
+                { initial: "AK", bg: "from-purple-600 to-pink-600" },
+                { initial: "RM", bg: "from-emerald-600 to-teal-600" },
+                { initial: "SL", bg: "from-amber-500 to-orange-600" }
+              ].map((av, i) => (
+                <div 
+                  key={i} 
+                  className={`w-10 h-10 rounded-full border-2 border-white bg-gradient-to-tr ${av.bg} flex items-center justify-center text-white text-xs font-black shadow-sm`}
+                >
+                  {av.initial}
+                </div>
               ))}
             </div>
-            <p className="uppercase tracking-widest">Trusted by <span className="text-slate-900">2,500+</span> agencies</p>
+            <div className="flex items-center gap-2">
+              <div className="flex gap-0.5 text-amber-400">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} className="w-3.5 h-3.5 fill-amber-400" />
+                ))}
+              </div>
+              <p className="uppercase tracking-widest text-[11px]">
+                <span className="text-slate-900 font-black">4.9/5</span> from <span className="text-slate-900 font-black">2,500+</span> businesses
+              </p>
+            </div>
           </motion.div>
         </div>
 

@@ -17,18 +17,23 @@ import {
   Plus,
   ShieldCheck,
   Zap,
-  ChevronRight
+  ChevronRight,
+  Bot,
+  User as UserIcon,
+  Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const menuItems = [
+const baseMenuItems = [
   { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { name: 'Magic QR', icon: QrCode, href: '/qr' },
   { name: 'Automation', icon: Settings2, href: '/automation' },
+  { name: 'AI Agent', icon: Bot, href: '/ai-agent', badge: 'AI' },
   { name: 'Audit Report', icon: FileSearch, href: '/audit' },
   { name: 'AI Suggested Posts', icon: Sparkles, href: '/posts', badge: 'NEW' },
   { name: 'Website', icon: Globe, href: '/website' },
   { name: 'Plans', icon: CreditCard, href: '/plans' },
+  { name: 'Profile', icon: UserIcon, href: '/profile' },
   { name: 'Settings', icon: Settings, href: '/settings' },
 ];
 
@@ -133,8 +138,11 @@ export default function Sidebar() {
 
       {/* 2. MIDDLE SECTION (Flex-1) */}
       <nav className="flex-1 px-4 space-y-0.5 overflow-y-auto scrollbar-hide">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.href;
+        {[
+          ...baseMenuItems,
+          ...(user?.role === 'admin' ? [{ name: 'Admin Hub', icon: Shield, href: '/admin-panel', badge: 'ADMIN' }] : [])
+        ].map((item) => {
+          const isActive = pathname === item.href || (item.href === '/admin-panel' && pathname.startsWith('/admin-panel'));
           return (
             <Link 
               key={item.name} 

@@ -13,8 +13,8 @@ export default function LiveSitePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get(`/user/site/${params.id}`);
-        setData(res.data);
+        const res: any = await api.get(`/user/site/${params.id}`);
+        setData(res?.data || res);
       } catch (err) {
         console.error('Failed to load site data', err);
       } finally {

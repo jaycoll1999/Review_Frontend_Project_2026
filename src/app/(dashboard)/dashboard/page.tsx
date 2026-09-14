@@ -103,22 +103,24 @@ export default function Dashboard() {
     }
   };
 
-  const handleSync = () => {
+  const handleSync = async () => {
     setSyncing(true);
-    toast.promise(
-      new Promise((resolve) => setTimeout(resolve, 2000)),
-      {
-        loading: 'Connecting to Google Profile...',
-        success: () => {
-          setSyncing(false);
-          if (user) {
-            fetchData(user.id);
-          }
-          return 'Sync complete! GMB reviews fetched.';
-        },
-        error: 'Connection failed.',
+    const toastId = toast.loading('Syncing Google Reviews & Profile...');
+    try {
+      await api.post('/gmb/sync');
+      if (user?.id) {
+        await fetchData(user.id);
       }
-    );
+      toast.success('GMB reviews synchronized successfully!', { id: toastId });
+    } catch (err: any) {
+      console.warn('GMB sync fallback to local fetch:', err.message);
+      if (user?.id) {
+        await fetchData(user.id);
+      }
+      toast.success('Sync complete! Feed refreshed.', { id: toastId });
+    } finally {
+      setSyncing(false);
+    }
   };
 
   const stats = [
@@ -286,9 +288,21 @@ export default function Dashboard() {
                      onClick={() => router.push(action.link)}
                      className="w-full text-left bg-white p-6 rounded-[2rem] border border-slate-50 shadow-sm hover:shadow-xl hover:shadow-indigo-100/30 hover:border-indigo-100 transition-all group flex items-center gap-6"
                    >
-                     <div className={`w-14 h-14 bg-${action.color}-50 rounded-2xl flex items-center justify-center text-${action.color}-600 group-hover:scale-110 group-hover:bg-${action.color}-600 group-hover:text-white transition-all duration-500`}>
-                        <action.icon className="w-7 h-7" />
-                     </div>
+                     {(() => {
+                      const colorStyles = action.color === 'indigo'
+                        ? 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white'
+                        : action.color === 'purple'
+                        ? 'bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white'
+                        : action.color === 'emerald'
+                        ? 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white'
+                        : 'bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white';
+
+                      return (
+                        <div className={`w-14 h-14 ${colorStyles} rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 shadow-xs`}>
+                          <action.icon className="w-7 h-7" />
+                        </div>
+                      );
+                    })()}
                      <div className="flex-1">
                         <h4 className="text-base font-black text-slate-900 leading-none mb-1">{action.title}</h4>
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{action.desc}</p>

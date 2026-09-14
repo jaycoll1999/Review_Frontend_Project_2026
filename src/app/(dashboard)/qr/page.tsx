@@ -93,7 +93,16 @@ export default function QRPage() {
             <p className="text-lg font-medium text-slate-500 mt-2">Generate high-converting QR designs for your physical location.</p>
           </div>
           <div className="flex gap-4">
-            <Button variant="outline" className="flex items-center gap-2 px-6">
+            <Button 
+              onClick={() => {
+                if (typeof window !== 'undefined' && navigator.clipboard) {
+                  navigator.clipboard.writeText(funnelUrl);
+                  toast.success('Funnel link copied to clipboard!');
+                }
+              }}
+              variant="outline" 
+              className="flex items-center gap-2 px-6"
+            >
               <Share2 className="w-4 h-4" />
               Share Funnel
             </Button>

@@ -1,6 +1,7 @@
 'use client';
 import { Check, Star, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const plans = [
   {
@@ -129,8 +130,4 @@ export default function Pricing() {
       </div>
     </section>
   );
-}
-
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(' ');
 }
